@@ -3,6 +3,8 @@
 
 import java.io.*;
 import java.util.Scanner;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.*;
 
 // 例外処理（2）
 // プログラム内容は実行時、初回と２回目で表示が異なり２回目以降は前回入力された値を表示する
@@ -15,6 +17,7 @@ public class Basic09 {
   // ３）例外発生した場合もファイルcloseの処理は実行しないといけないのでfinally節でクローズ処理
   // クローズ処理時に例外が発生する可能性もあるのでtry文中に例外処理をネストしている
   static void init() {
+    // ＝＝＝＝＝＝＝＝＝＝＝ファイルの読み込み＝＝＝＝＝＝＝＝＝＝＝ //
     BufferedReader br = null;
 
     try {
@@ -32,6 +35,20 @@ public class Basic09 {
         }
       }
     }
+    // ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝ //
+
+    // ＝＝＝＝＝＝＝＝＝＝＝＝＝ファイルの読み込み省略形＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝ //
+    Path path = Paths.get("Study/Basics/LastTime.txt");
+
+    // ------try()はclose()を自動でしてくれる。FileWriterも同じ------ //
+    try(BufferedReader br = Files.newBufferedReader(path, StandardCharsets.UTF_8)) {
+      for (Stirng line; (line = br.readLine()) != null; ) {
+        System.out.println("前回の気分は" + line + "でした。");
+      }
+    } catch(IOException e) {
+      System.err.println(e);
+    }
+    // ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝ //
   }
 
   // 入力された内容の書き込み
